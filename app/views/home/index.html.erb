@@ -1,5 +1,31 @@
-<h1>Welcome</h1>
+<h1>PicAIune Quiz Machine</h1>
 
-<%= button_to "New Game", tables_path, method: :post %>
+<h3>PicAIune can currently answer only multiple choice questions, please enter your question in the text box below along with 2 or more possible answer choices and press cross your fingers! <br> Then push Show me the Answer to receive PicAIune's response.</h3>
+
+<div class="question_form">
+		<%= form_for @question, style: 'display: inline' do |f| %>
+			<%= f.label :text, "Your Question Here" %>
+			<%= f.text_area :text %><br>
+			<%= f.label :choice1 %>
+			<%= f.text_field :choice1 %><br>
+			<%= f.label :choice2 %>	
+			<%= f.text_field :choice2 %><br>
+			<%= f.label :choice3 %>	
+			<%= f.text_field :choice3 %><br>
+			<%= f.label :choice4 %>
+			<%= f.text_field :choice4 %><br>
+			<%= f.submit "Cross Your Fingers" %>
+		<% end %> 
+</div>
+
+<% if Question.all.last %>
+	<%= button_to "Show me the Answer", question_path(Question.all.last.id), method: :patch %>
+<% end %>
+
+<div class="answer">
+<% if Question.all.last %>
+	<%= Question.all.last.answer %>
+	<%end %>
+</div>
 
 

@@ -1,175 +1,37 @@
 html body {
-  background: url('table.png');
+  background: url('background.jpg');
   background-size: cover;
   background-repeat: no-repeat;
 }
 
 body {
   color: white;
-}
-
-.table {
-  position: absolute;
-  width: 88%;
-  height: 75%;
-  top: 40px;
-  left: 50px;
-}
-
-.chips {
-  font-size: 20px;
-}
-
-#state {
-  font-family: courier;
-  font-weight: bolder;
-  color: #0D0D0D;
-  position: absolute;
-  font-size: 20px;
-  top: 48%;
-  left: 20%;
-}
-
-#blinds {
-  position: absolute;
-  font-size: 12px;
-  top: 4%;
-  right: 0%;
-}
-
-#player1 {
-  position: absolute;
-  left: 45%;
-  top: 0%;
-}
-#player2 {
-  position: absolute;
-  right:19%;
-  top: 10%;
-}
-#player3 {
-  position: absolute;
-  right: 0%;
-  top: 35%;
-}
-#player4 {
-  position: absolute;
-  right: 10%;
-  bottom: 20%;
-}
-#player5 {
-  position: absolute;
-  right: 33%;
-  bottom: 5%;
-}
-#player6 {
-  position: absolute;
-  left: 33%;
-  bottom: 5%;
-}
-#player7 {
-  position: absolute;
-  left: 10%;
-  bottom:20%;
-}
-#player8 {
-  position: absolute;
-  left: 0%;
-  top: 35%;
-}
-#player9 {
-  position: absolute;
-  left: 19%;
-  top: 10%;
-}
-#board1 {
-  position: absolute;
-  left: 35%;
-  top: 45%;
-}
-#board2 {
-  position: absolute;
-  left: 44%;
-  top: 45%;
-}
-#board3 {
-  position: absolute;
-  left:53%;
-  top: 45%;
-}
-#board4 {
-  position: absolute;
-  left:62%;
-  top: 45%;
-}
-#board5 {
-  position: absolute;
-  left:71%;
-  top: 45%;
-}
-.boxed {
-  color: white;
   text-align: center;
-  border: 3px solid white;
-  width: 12%;
-  height: 10%;
-  text-align: top;
-  font-size: 70%;
-  font-weight: bold;
-  padding-bottom:1%;
-  padding-top:-10%;
-  vertical-align: center;
-  background:
-    radial-gradient(black 15%, transparent 16%) 0 0,
-    radial-gradient(black 15%, transparent 16%) 8px 8px,
-    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
-    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
-    background-color:#282828;
-    background-size:16px 16px;
-  -moz-border-radius-topleft: 10px;
-  -moz-border-radius-topright: 10px;
-  -moz-border-radius-bottomright: 10px;
-  -moz-border-radius-bottomleft: 10px;
-
-  -webkit-border-top-left-radius: 10px;
-  -webkit-border-top-right-radius: 10px;
-  -webkit-border-bottom-right-radius: 10px;
-  -webkit-border-bottom-left-radius: 10px;
+  padding-top: 100px;
+  padding-left: 20%;
+  padding-right: 20%;
 }
 
-.boxed.action {
-  box-shadow: 0px 0px 20px white;
+h1 {
+  position: relative;
+  font-family:"Georgia", serif;
+  font-size: 50px;
+  color: #EEE;
+  text-shadow: 4px 4px 1px #300000;
 }
 
-.button_game{
-border:px solid #FFFFFF; -webkit-border-radius: px; -moz-border-radius: px;border-radius: px;width:px;font-size:px;font-family:arial, helvetica, sans-serif; padding: 10px 10px 10px 10px; text-decoration:none; display:inline-block; color: #FFFFFF;
- background-color: #45484d; background-image: -webkit-gradient(linear, left top, left bottom, from(#45484d), to(#000000));
- background-image: -webkit-linear-gradient(top, #45484d, #000000);
- background-image: -moz-linear-gradient(top, #45484d, #000000);
- background-image: -ms-linear-gradient(top, #45484d, #000000);
- background-image: -o-linear-gradient(top, #45484d, #000000);
- background-image: linear-gradient(to bottom, #45484d, #000000);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#45484d, endColorstr=#000000);
- font-weight: bold;
- font-family: Rockwell, Georgia, "Times New Roman", Times, serif;
- text-shadow: rgba(0,0,0,0.5) -1px 0, rgba(0,0,0,0.3) 0 -1px, rgba(255,255,255,0.5) 0 1px, rgba(0,0,0,0.3) -1px -2px;
- color: bright grey;
- font-size: 12px;
- position: relative-bottom;
- right:0;
- bottom:0;
- display:inline-block;
- margin-right:5px;
- float:right;
- width:10%;
+h3 {
+  position: relative;
+  font-family:"Georgia", serif;
+  font-size: 15px;
 }
 
-.button_game:hover{
- border:px solid #FFFFFF;
- background-color: #2d2f32; background-image: -webkit-gradient(linear, left top, left bottom, from(#2d2f32), to(#1a1a1a));
- background-image: -webkit-linear-gradient(top, #2d2f32, #1a1a1a);
- background-image: -moz-linear-gradient(top, #2d2f32, #1a1a1a);
- background-image: -ms-linear-gradient(top, #2d2f32, #1a1a1a);
- background-image: -o-linear-gradient(top, #2d2f32, #1a1a1a);
- background-image: linear-gradient(to bottom, #2d2f32, #1a1a1a);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#2d2f32, endColorstr=#1a1a1a);
- font-weight: bold;
+.question_form {
+  position: relative;
+  padding-top: 20px;
+  font-family:"Georgia", serif;
+}
+
+.answer {
+  font-size: 100px; 
 }

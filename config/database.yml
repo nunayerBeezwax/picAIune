@@ -1,7 +1,7 @@
 development:
   adapter: postgresql
-  database: poker_development
+  database: picAIune_development
 
 test:
   adapter: postgresql
-  database: poker_test
+  database: picAIune_test

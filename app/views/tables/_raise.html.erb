@@ -1,4 +1,0 @@
-<%= form_for :raise, url: player_path(@table.players.find_by_seat(@table.action_on_seat)), method: :patch, table: @table.id do |f| %>
-		<%= f.text_field :bet, size: 4, placeholder: "Amount" %><br>
-		<%= f.submit "Raise" %>
-<% end %>

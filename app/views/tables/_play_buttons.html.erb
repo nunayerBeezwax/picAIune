@@ -1,4 +1,0 @@
-<%= button_to "Fold", player_path(@table.players.find_by_seat(@table.action_on_seat), fold: :true, table: @table.id), class: "button_player", method: :patch %>
-<%= button_to "Check", player_path(Player.find(@table.action_on_seat), check: :true), class: "button_player", method: :patch %>
-<%= button_to "Call", player_path(Player.find(@table.action_on_seat), call: :true), class: "button_player", method: :patch %>
-<%= button_to "Raise", player_path(Player.find(@table.action_on_seat), raise_bet: :true), class: "button_player", method: :patch %>

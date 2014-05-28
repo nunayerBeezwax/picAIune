@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+
 gem 'rails', '4.0.4'
 gem 'pg'
 gem 'sass-rails'
@@ -9,6 +10,8 @@ gem 'jbuilder'
 gem 'bootstrap'
 gem 'turbolinks'
 gem 'faker'
+gem 'bootstrap_form'
+gem 'nokogiri'
 
 group :development do
   gem 'better_errors'
