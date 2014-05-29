@@ -17,7 +17,7 @@ require 'open-uri'
 		end
 		uri = URI.parse("http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=#{wiki_word}&rvprop=content&format=json&rvparse=1")
 		wiki_page = Nokogiri::HTML(open("http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=#{wiki_word}&redirects&rvprop=content&format=json&rvparse=1"))
-		File.open("picAIune.html", "w") do |f|
+		File.open("tmp/picAIune.html", "w") do |f|
 			f.puts wiki_page
 		end
 		word_count = {}
