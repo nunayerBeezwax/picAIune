@@ -12,6 +12,7 @@ gem 'turbolinks'
 gem 'faker'
 gem 'bootstrap_form'
 gem 'nokogiri'
+gem 'engtagger'
 
 group :development do
   gem 'better_errors'
@@ -21,6 +22,7 @@ end
 
 group :test, :development do
   gem 'rspec-rails'
+  gem 'pry'
 end
 
 group :test do
