@@ -19,6 +19,12 @@ describe Question do
 		end 
 	end
 
+	describe '#dictionary_lookup' do
+		it 'gets a definition string from wiktionary api' do
+			@fact.dictionary_lookup("animal")
+		end
+	end
+
 	describe '#proper_nouns' do
 		it 'hash counts all the proper nouns from input' do
 			@single_proper.proper_nouns(@tagged_single).should eq "Einstein" => 1

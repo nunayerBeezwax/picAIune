@@ -6,6 +6,23 @@ require 'open-uri'
 #CHOP IT OFF AT THE "SEE ALSO" SECTION to minimize false
 #reports.
 ###
+### 
+# Need a way to determine when it would be better to search by choices
+# rather than question.  ie "which planet has the biggest volcano"
+##
+
+	def dictionary_lookup(word)
+		wiki_page = Nokogiri::HTML(open("http://en.wiktionary.org/w/index.php?action=raw&prop=revisions&title=#{word}&redirects&rvprop=content&format=json&rvparse=1"))
+		File.open("tmp/picAIune.html", "w") do |f|
+			f.puts wiki_page
+		end
+		word_count = Hash.new(0)
+		words = File.read("tmp/picAIune.html").split(" ")
+		string = words.join(" ").downcase
+		sanitized_string = string.gsub(/\/[,()'":<>=.]/,'')
+		sanitized_string.split(" ").each { |word| word_count[word] += 1 }
+		binding.pry
+	end
 
 	def find_the_answer
 		choices = self.choice_array
@@ -44,10 +61,10 @@ require 'open-uri'
 
 	def choice_array
 		choices = []
-		choices << self.choice1 unless self.choice1.nil?
-		choices << self.choice2 unless self.choice2.nil?
-		choices << self.choice3 unless self.choice3.nil?
-		choices << self.choice4 unless self.choice4.nil?
+		choices << self.choice1.downcase unless self.choice1.nil?
+		choices << self.choice2.downcase unless self.choice2.nil?
+		choices << self.choice3.downcase unless self.choice3.nil?
+		choices << self.choice4.downcase unless self.choice4.nil?
 		choices
 	end
 
