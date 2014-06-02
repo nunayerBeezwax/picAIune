@@ -19,6 +19,24 @@ describe Question do
 		end 
 	end
 
+	describe '#call_duck_api' do
+		it 'returns info from duck duck go search' do
+			@fact.call_duck_api("minneapolis")
+		end
+	end	
+
+	describe '#call_wikipedia_api' do
+		it 'returns info from wikipedia search' do
+			@fact.call_wikipedia_json("minneapolis")
+		end
+	end	
+
+	describe '#call_wolfram_api' do
+		it 'returns info from wolfram alpha search' do
+			@fact.call_wolfram_api("minneapolis")
+		end
+	end
+
 	describe '#dictionary_lookup' do
 		it 'gets a definition string from wiktionary api' do
 			@fact.dictionary_lookup("animal")

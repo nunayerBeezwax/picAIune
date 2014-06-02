@@ -13,6 +13,8 @@ gem 'faker'
 gem 'bootstrap_form'
 gem 'nokogiri'
 gem 'engtagger'
+gem 'duck-duck-go'
+gem 'figaro'
 
 group :development do
   gem 'better_errors'
