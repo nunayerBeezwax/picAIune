@@ -22,10 +22,14 @@
 	<%= button_to "Show me the Answer", question_path(Question.all.last.id), method: :patch %>
 <% end %>
 
+
+<% if Question.all.last %>
+	<strong><%= "I think this is a \"#{Question.all.last.question_type}\" question" %><br>
+	<%= "The operative word appears to be \"#{Question.all.last.operative_word}\"." %></strong>
+<%end%>
+
 <div class="answer">
 <% if Question.all.last %>
 	<%= Question.all.last.answer %>
 	<%end %>
 </div>
-
-

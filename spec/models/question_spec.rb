@@ -13,9 +13,9 @@ describe Question do
 		@tagged_double = @tagger.add_tags(@double_proper.text)
 	end
 	
-	describe '#part_of_speech' do
-		it 'types words by lexical category' do
-			#this may be unnecessary due to EngTagger gem
+	describe '#question_type' do
+		it 'returns interrogative word found in question string' do
+			@double_proper.question_type.should eq "when"
 		end 
 	end
 

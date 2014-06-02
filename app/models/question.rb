@@ -4,35 +4,19 @@ require 'open-uri'
 
 ###################
 #CHOP IT OFF AT THE "SEE ALSO" SECTION to minimize false
-#reports.
-###
-### 
-# Need a way to determine when it would be better to search by choices
-# rather than question.  ie "which planet has the biggest volcano"
+#reports
 ##
 
-	def dictionary_lookup(word)
-		wiki_page = Nokogiri::HTML(open("http://en.wiktionary.org/w/index.php?action=raw&prop=revisions&title=#{word}&redirects&rvprop=content&format=json&rvparse=1"))
-		File.open("tmp/picAIune.html", "w") do |f|
-			f.puts wiki_page
-		end
-		word_count = Hash.new(0)
-		words = File.read("tmp/picAIune.html").split(" ")
-		string = words.join(" ").downcase
-		sanitized_string = string.gsub(/\/[,()'":<>=.]/,'')
-		sanitized_string.split(" ").each { |word| word_count[word] += 1 }
-		binding.pry
+	def question_type
+		question_words = %w{which what whose who whom where when how}
+		question_words.each {|w| return w if self.text.downcase[w] != nil}
 	end
 
 	def find_the_answer
 		choices = self.choice_array
-		tagged = @@tagger.add_tags(self.text)
-		if proper_nouns(tagged).length > 0
-			wiki_words = proper_nouns(tagged)
-			search = wiki_words.keys.join("%20")
-		else
-			search = nouns(tagged).keys.last
-		end
+		binding.pry
+		q = question_type
+		search = operative_word
 		wiki_page = Nokogiri::HTML(open("http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=#{search}&redirects&rvprop=content&format=json&rvparse=1"))
 		File.open("tmp/picAIune.html", "w") do |f|
 			f.puts wiki_page
@@ -51,12 +35,16 @@ require 'open-uri'
 		end
 	end
 
-	def proper_nouns(tagged)
-		@@tagger.get_proper_nouns(tagged)
+	def tag
+		@@tagger.add_tags(self.text)
 	end
 
-	def nouns(tagged)
-		@@tagger.get_nouns(tagged)
+	def proper_nouns
+		@@tagger.get_proper_nouns(self.tag)
+	end
+
+	def nouns
+		@@tagger.get_nouns(self.tag)
 	end
 
 	def choice_array
@@ -68,12 +56,37 @@ require 'open-uri'
 		choices
 	end
 
-	def parse_question(string)
-		string = string.downcase
-		array = string.split(" ")
-		if array.include?("is")
-			operative_word = array[array.index("is") + 1]
+	def operative_word
+		if proper_nouns.length > 0
+			proper_nouns.keys.join("%20")
+		else
+			nouns.keys.last
 		end
-		;lkajsdf;lkasjdf
 	end
+
+	def dictionary_lookup(word)
+		wiki_page = Nokogiri::HTML(open("http://en.wiktionary.org/w/index.php?action=raw&prop=revisions&title=#{word}&redirects&rvprop=content&format=json&rvparse=1"))
+		File.open("tmp/picAIune.html", "w") do |f|
+			f.puts wiki_page
+		end
+		word_count = Hash.new(0)
+		words = File.read("tmp/picAIune.html").split(" ")
+		string = words.join(" ").downcase
+		sanitized_string = string.gsub(/\/[,()'":<>=.]/,'')
+		sanitized_string.split(" ").each { |word| word_count[word] += 1 }
+	end
+	##following code copy/pasted from EngTagger for picAIune purposes
+
+	 def strip_tags(tagged, downcase = false)
+    return nil unless valid_text(@tagged)
+    text = @tagged.gsub(/<[^>]+>/m, "")
+    text = text.gsub(/\s+/m, " ")
+    text = text.gsub(/\A\s*/, "")
+    text = text.gsub(/\s*\z/, "")
+    if downcase
+      return text.downcase
+    else
+      return text
+    end
+  end
 end
