@@ -44,9 +44,9 @@ require 'open-uri'
 	end	
 
 	def call_wikipedia_api(search)
-		data = Nokogiri::HTML(open("http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=#{search}&redirects&rvprop=content&format=json&rvparse=1"))
+		data = Nokogiri::HTML(open("http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=#{search}&redirects&rvprop=content&format=json&rvparse=1")).css('p')
 		File.open("tmp/picAIune.html", "w") do |f|
-			f.puts data
+			data.each{|n| f.puts n.text}
 		end
 	end
 
@@ -64,20 +64,27 @@ require 'open-uri'
 	end
 
 	def search_by_choices
+		@answer_hash = {}
 		@choices.each do |search|
-			call_wikipedia_api(search)
+			call_wikipedia_api(search.titleize.gsub(" ", "%20"))
 			word_count = {}
 			words = File.read("tmp/picAIune.html").split(" ")
 			string = words.join(" ").downcase
 			sanitized_string = string.gsub(/\/[,()'":<>=.]/,'')
-			answer = {}
-			nouns.keys[0..-2].each { |w| answer[w] = string.scan(/#{Regexp.quote(w)}/).size if w != '' }
-			if !answer.values.any?{ |v| v > 0 }
-				self.update(answer: "I don't know")
-			else
-				answer.each{|k, v| "#{k} === #{v}"}
-				self.update(answer: answer.sort_by{|k, v| v}.reverse.first[0].titleize)
+			nouns.keys[0..-2].each do |w| 
+				if @answer_hash[w]
+					@answer_hash[w] += sanitized_string.scan(/#{Regexp.quote(w.downcase)}/).size if w != '' 
+				else
+					@answer_hash[w] = sanitized_string.scan(/#{Regexp.quote(w.downcase)}/).size if w != '' 	
+				end
 			end
+		binding.pry
+		end
+		if !@answer_hash.values.any?{ |v| v > 0 }
+			self.update(answer: "I don't know")
+		else
+			@answer_hash.each{|k, v| "#{k} === #{v}"}
+			self.update(answer: @answer_hash.sort_by{|k, v| v}.reverse.first[0].titleize)
 		end
 	end
 
