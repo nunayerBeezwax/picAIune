@@ -1,6 +1,7 @@
 class Question < ActiveRecord::Base
 require 'open-uri'
 require 'csv'
+require 'duck_duck_go'
 
 @@tagger = EngTagger.new
 CORPUS = CSV.read("corpus.csv").each_with_object({}) do |line, h|
@@ -16,7 +17,6 @@ end
 		@choices = self.choice_array
 		q = question_type
 		search = operative_word
-		binding.pry
 		if q == "which"
 			search_by_choices
 		else
@@ -24,9 +24,8 @@ end
 			word_count = {}
 			words = File.read("tmp/picAIune.html").split(" ")
 			string = words.join(" ").downcase
-			sanitized_string = string.gsub(/\/[,()'":<>=.]/,'')
 			answer = {}
-			@choices.each { |w| answer[w] = string.scan(/[^a-zA-Z]#{Regexp.quote(w)}[^a-zA-Z]/).size if w != '' }
+			@choices.each { |w| answer[w] = string.scan(/[^a-zA-Z]#{Regexp.quote(w)}/).size if w != '' }
 			if !answer.values.any?{ |v| v > 0 }
 				self.update(answer: "I don't know")
 			else
@@ -39,13 +38,18 @@ end
 	def call_wikipedia_api(search)
 		data = Nokogiri::HTML(open("http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=#{search}&redirects&rvprop=content&format=json&rvparse=1")).css('p')
 		File.open("tmp/picAIune.html", "w") do |f|
-			data.each{|n| f.puts n.text}
+			data.each{|n| f.puts n.text.gsub(/"|\/|\\|\(|\)|\[|\]/,'')}
 		end
 	end
 
 	def call_duck_api(search)
+		data = Nokogiri::HTML(open("http://api.duckduckgo.com/?q=#{search}&format=json&pretty=1"))
+		File.open("tmp/picAIune.html", "w") do |f|
+			f.puts data
+		end
 		ddg = DuckDuckGo.new
 		zci = ddg.zeroclickinfo(search)
+		binding.pry
 	end
 
 	def call_wolfram_api(search)
@@ -66,9 +70,9 @@ end
 			sanitized_string = string.gsub(/\/[,()'":<>=.]/,'')
 			nouns.keys[0..-2].each do |w| 
 				if @answer_hash[w]
-					@answer_hash[w] += sanitized_string.scan(/[^a-zA-Z]#{Regexp.quote(w.downcase)}[^a-zA-Z]/).size if w != '' 
+					@answer_hash[w] += sanitized_string.scan(/[^a-zA-Z]#{Regexp.quote(w.downcase)}/).size if w != '' 
 				else
-					@answer_hash[w] = sanitized_string.scan(/[^a-zA-Z]#{Regexp.quote(w.downcase)}[^a-zA-Z]/).size if w != '' 	
+					@answer_hash[w] = sanitized_string.scan(/[^a-zA-Z]#{Regexp.quote(w.downcase)}/).size if w != '' 	
 				end
 			end
 		end
