@@ -1,6 +1,11 @@
 class Question < ActiveRecord::Base
 require 'open-uri'
+require 'csv'
+
 @@tagger = EngTagger.new
+CORPUS = CSV.read("corpus.csv").each_with_object({}) do |line, h|
+  h[line[1].strip] = line[0].to_i
+end
 
 	def question_type
 		question_words = %w{which what whose who whom where when how}
@@ -11,6 +16,7 @@ require 'open-uri'
 		@choices = self.choice_array
 		q = question_type
 		search = operative_word
+		binding.pry
 		if q == "which"
 			search_by_choices
 		else
@@ -78,7 +84,6 @@ require 'open-uri'
 					@answer_hash[w] = sanitized_string.scan(/#{Regexp.quote(w.downcase)}/).size if w != '' 	
 				end
 			end
-		binding.pry
 		end
 		if !@answer_hash.values.any?{ |v| v > 0 }
 			self.update(answer: "I don't know")
@@ -113,7 +118,8 @@ require 'open-uri'
 		if proper_nouns.length > 0
 			proper_nouns.keys.join("%20")
 		else
-			nouns.keys.last
+			x = nouns.keys.map{|noun| Question::CORPUS[noun] || 0}.sort
+			nouns.keys[x.each_with_index.min[1]]
 		end
 	end
 
