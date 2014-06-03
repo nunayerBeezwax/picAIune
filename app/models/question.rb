@@ -20,16 +20,13 @@ end
 		if q == "which"
 			search_by_choices
 		else
-			wiki_page = Nokogiri::HTML(open("http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=#{search}&redirects&rvprop=content&format=json&rvparse=1"))
-			File.open("tmp/picAIune.html", "w") do |f|
-				f.puts wiki_page
-			end
+			call_wikipedia_api(search)
 			word_count = {}
 			words = File.read("tmp/picAIune.html").split(" ")
 			string = words.join(" ").downcase
 			sanitized_string = string.gsub(/\/[,()'":<>=.]/,'')
 			answer = {}
-			@choices.each { |w| answer[w] = string.scan(/#{Regexp.quote(w)}/).size if w != '' }
+			@choices.each { |w| answer[w] = string.scan(/[^a-zA-Z]#{Regexp.quote(w)}[^a-zA-Z]/).size if w != '' }
 			if !answer.values.any?{ |v| v > 0 }
 				self.update(answer: "I don't know")
 			else
@@ -38,16 +35,6 @@ end
 			end
 		end
 	end
-
-	def call_wikipedia_json(search)
-		uri = URI("http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=#{search}&redirects&rvprop=content&format=json&rvparse=1")
-		response = Net::HTTP.get_response(uri)
-		json = JSON.parse(response.body)
-		File.open("tmp/picAIune.json", "w") do |f|
-			f.puts json
-		end
-		binding.pry
-	end	
 
 	def call_wikipedia_api(search)
 		data = Nokogiri::HTML(open("http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=#{search}&redirects&rvprop=content&format=json&rvparse=1")).css('p')
@@ -79,9 +66,9 @@ end
 			sanitized_string = string.gsub(/\/[,()'":<>=.]/,'')
 			nouns.keys[0..-2].each do |w| 
 				if @answer_hash[w]
-					@answer_hash[w] += sanitized_string.scan(/#{Regexp.quote(w.downcase)}/).size if w != '' 
+					@answer_hash[w] += sanitized_string.scan(/[^a-zA-Z]#{Regexp.quote(w.downcase)}[^a-zA-Z]/).size if w != '' 
 				else
-					@answer_hash[w] = sanitized_string.scan(/#{Regexp.quote(w.downcase)}/).size if w != '' 	
+					@answer_hash[w] = sanitized_string.scan(/[^a-zA-Z]#{Regexp.quote(w.downcase)}[^a-zA-Z]/).size if w != '' 	
 				end
 			end
 		end
@@ -149,3 +136,12 @@ end
     end
   end
 end
+	# def call_wikipedia_json(search)
+	# 	uri = URI("http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=#{search}&redirects&rvprop=content&format=json&rvparse=1")
+	# 	response = Net::HTTP.get_response(uri)
+	# 	json = JSON.parse(response.body)
+	# 	File.open("tmp/picAIune.json", "w") do |f|
+	# 		f.puts json
+	# 	end
+	# 	binding.pry
+	# end	
