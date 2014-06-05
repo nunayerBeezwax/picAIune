@@ -43,12 +43,21 @@ end
 	end
 
 	def call_duck_api(search)
-		data = Nokogiri::HTML(open("http://api.duckduckgo.com/?q=#{search}&format=json&pretty=1"))
+		data = Nokogiri::HTML(open("http://api.duckduckgo.com/?q=#{search}&format=json"))
 		File.open("tmp/picAIune.html", "w") do |f|
 			f.puts data
 		end
+		duck_links = []
+		zci.related_topics.first[1].each{|link| duck_links << link.first_url.request_uri}
+	end
+
+	def get_population(search)
 		ddg = DuckDuckGo.new
 		zci = ddg.zeroclickinfo(search)
+		File.open("tmp/picAIune.html", "w") do |f|
+			f.puts zci
+		end
+		x = File.read("tmp/picAIune.html")
 		binding.pry
 	end
 
@@ -110,6 +119,7 @@ end
 			proper_nouns.keys.join("%20")
 		else
 			x = nouns.keys.map{|noun| Question::CORPUS[noun] || 0}.sort
+			### needs some attention
 			nouns.keys[x.each_with_index.min[1]]
 		end
 	end

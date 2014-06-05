@@ -15,6 +15,7 @@ gem 'nokogiri'
 gem 'engtagger'
 gem 'duck-duck-go'
 gem 'figaro'
+gem 'rails_12factor'
 
 group :development do
   gem 'better_errors'
