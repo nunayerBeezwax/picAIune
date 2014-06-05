@@ -7,5 +7,5 @@ test:
   database: picAIune_test
 
 production: 
-	adapter: postgresql
-	database: picAIune_production
+  adapter: postgresql
+  database: picAIune_production
