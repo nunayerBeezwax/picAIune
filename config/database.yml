@@ -5,3 +5,7 @@ development:
 test:
   adapter: postgresql
   database: picAIune_test
+
+production: 
+	adapter: postgresql
+	database: picAIune_production
