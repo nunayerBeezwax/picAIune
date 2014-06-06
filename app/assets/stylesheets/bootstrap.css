@@ -28,6 +28,8 @@ h3 {
 
 .question_form {
   position: relative;
+  vertical-align: center;
+  width: 100%;
   padding-top: 20px;
   font-family:"Georgia", serif;
 }

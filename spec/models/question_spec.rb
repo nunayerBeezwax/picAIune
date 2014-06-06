@@ -61,4 +61,12 @@ describe Question do
 			@fact.choice_array.should eq ["1910", "1879", "1855"]
 		end
 	end
+
+	describe '#search_by_choices' do
+		it 'runs on which questions, searching by choices for keyword in question' do
+			q = Question.new(text: "Which is a fruit", choice1: "Banana", choice2: "Corn")
+			q.find_the_answer
+			q.answer.should eq "Banana"
+		end
+	end
 end

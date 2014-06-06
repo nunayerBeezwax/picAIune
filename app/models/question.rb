@@ -77,12 +77,9 @@ end
 			words = File.read("tmp/picAIune.html").split(" ")
 			string = words.join(" ").downcase
 			sanitized_string = string.gsub(/\/[,()'":<>=.]/,'')
-			nouns.keys[0..-2].each do |w| 
-				if @answer_hash[w]
-					@answer_hash[w] += sanitized_string.scan(/[^a-zA-Z]#{Regexp.quote(w.downcase)}/).size if w != '' 
-				else
-					@answer_hash[w] = sanitized_string.scan(/[^a-zA-Z]#{Regexp.quote(w.downcase)}/).size if w != '' 	
-				end
+			nouns.keys.each do |keyword| 
+				count = sanitized_string.scan(/[^a-zA-Z]#{Regexp.quote(keyword.downcase)}/).size if keyword != '' 
+				@answer_hash[search] = count 
 			end
 		end
 		if !@answer_hash.values.any?{ |v| v > 0 }
