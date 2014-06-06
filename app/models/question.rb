@@ -17,7 +17,7 @@ end
 		@choices = self.choice_array
 		q = question_type
 		search = operative_word
-		if q == "which"
+		if q == "which" || q == "who"
 			search_by_choices
 		else
 			call_wikipedia_api(search)
@@ -77,10 +77,8 @@ end
 			words = File.read("tmp/picAIune.html").split(" ")
 			string = words.join(" ").downcase
 			sanitized_string = string.gsub(/\/[,()'":<>=.]/,'')
-			nouns.keys.each do |keyword| 
-				count = sanitized_string.scan(/[^a-zA-Z]#{Regexp.quote(keyword.downcase)}/).size if keyword != '' 
-				@answer_hash[search] = count 
-			end
+			count = sanitized_string.scan(/[^a-zA-Z]#{Regexp.quote(operative_word.downcase)}/).size 
+			@answer_hash[search] = count 
 		end
 		if !@answer_hash.values.any?{ |v| v > 0 }
 			self.update(answer: "I don't know")
